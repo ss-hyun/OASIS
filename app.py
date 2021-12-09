@@ -1,5 +1,6 @@
 import os
 import re
+import json
 from flask import Flask, jsonify, request
 from flask_cors import CORS
 from flask_restx import Resource, Api
@@ -17,35 +18,197 @@ app.config['MYSQL_PASSWORD'] = os.getenv("MYSQL_PASSWORD")
 app.config['MYSQL_HOST'] = os.getenv("MYSQL_HOST")
 app.config['MYSQL_DB'] = os.getenv("MYSQL_DB")
 
-columns = []
+attribute_list = {
+    "MOVIE" : [ "Movie_id", "Title", "Release_date", "Running_time", "Movie_rating",
+                    "Budget", "Image_link", "Overview", "Total_revenue", "Grade", "Vote_count" ],
+    "M_GENRES" : [ "Mid", "Genres" ],
+    "MOVIE_OFFICIALS" : [ "Officials_id", "Name", "Birth", "Gender", "Biography", "Image_link" ],
+    "ACT_IN" :  [ "Mid", "Oid" ],
+    "DIRECTED" : [ "Mid", "Oid" ],
+    "VARIANCE" : [ "Mid", "Update_date", "Daily_revenue" ]
+}
 
-@api.route('/admin')
+@api.route('/admin/<string:name>')
 class DoSimple(Resource):
-    def get(self):
-        cur = mysql.connection.cursor()
-        cur.execute("SELECT * FROM MOVIE")
-        res = cur.fetchall()
-        return jsonify(res)
+    def get(self, name):
+        if name == "movie":
+            cur = mysql.connection.cursor()
+            cur.execute("SELECT * FROM MOVIE;")
+            res = cur.fetchall()
+            return jsonify(res)
 
-    def post(self):
-        #param = request.get_data()
-        mid = request.form['Movie_id']
-        title = request.form['Title']
-        release = request.form['Release_date']
-        run_time = request.form['Running_time']
-        rating = request.form['Movie_rating']
-        print(mid,title,release,run_time,rating)
+    def post(self, name):
+        if name == "genres":
+            data_path = request.get_data().decode()
 
-        cur = mysql.connection.cursor()
-        # f = open("/home/ss/record2.txt", 'w')
-        # f.write('INSERT INTO MOVIE VALUES {} {} {} {} {} {} {} {} {} {}'.format(type(mid), mid, type(release), release, type(title), title, type(run_time), run_time, type(rating), rating ))
-        # f.close()
-        input = "INSERT INTO MOVIE(Movie_id,Release_date,Title,Running_time,Movie_rating) VALUES ({},{},{},{},{})".format(mid, release, title, run_time, rating)
-        ret = cur.execute(input)
+            with open(data_path, encoding='utf-8') as f:
+                data = json.load(f)
+            print(len(data))
+            
+            ret = []
+            
+            cur = mysql.connection.cursor()
+            for d in data:
+                input = "SELECT * FROM M_GENRES WHERE Mid={} AND Genres='{}';".format(d["Mid"], d["Genres"])
+                cur.execute(input)
+                if not cur.fetchall():
+                    input = 'CALL Gr_insert (\'{}\');'.format(json.dumps(d))
+                    if cur.execute(input): ret.append(d)
+                    mysql.connection.commit()
+                
+            f.close()
 
-        mysql.connection.commit()
+            with open('insert+fail({}).json'.format(data_path.split("/")[4].split('.')[0]),'w', encoding='utf-8') as make_file:
+                json.dump(ret, make_file, indent="\t")
+            
+            make_file.close()
+            cur.close()
+        elif name == "movie":
+            #param = request.get_data()
+            # mid = request.form['Movie_id']
+            # title = request.form['Title']
+            # release = request.form['Release_date']
+            # run_time = request.form['Running_time']
+            # rating = request.form['Movie_rating']
+            # budget = request.form['Budget']
+            # img = request.form['Image_link']
+            # overview = request.form['Overview']
+            # tot_rev = request.form['Total_revenue']
+            # grade = request.form['Grade']
+            # v_count = request.form['Vote_count']
+            
+            data_path = request.get_data().decode()
+            
+            with open(data_path, encoding='utf-8') as f:
+                data = json.load(f)
+            print(len(data))
+            
+            ret = []
+            cur = mysql.connection.cursor()
 
-        cur.close()
+            for d in data:
+                input = "SELECT * FROM MOVIE WHERE Movie_id={};".format(d["Movie_id"])
+                d["Title"] = '{}'.format(d["Title"]).replace("'","''")
+                d["Title"] = '{}'.format(d["Title"]).replace("\r"," ")
+                d["Title"] = '{}'.format(d["Title"]).replace("\n"," ")
+                d["Title"] = '{}'.format(d["Title"]).replace("\t"," ")
+                d["Title"] = '{}'.format(d["Title"]).replace("\\","\\\\")
+                d["Title"] = '{}'.format(d["Title"]).replace("\"","\\\"")
+                d["Overview"] = '{}'.format(d["Overview"]).replace("'","''")
+                d["Overview"] = '{}'.format(d["Overview"]).replace("\r"," ")
+                d["Overview"] = '{}'.format(d["Overview"]).replace("\n"," ")
+                d["Overview"] = '{}'.format(d["Overview"]).replace("\t"," ")
+                d["Overview"] = '{}'.format(d["Overview"]).replace("\\","\\\\")
+                d["Overview"] = '{}'.format(d["Overview"]).replace("\"","\\\"")
+                if d["Release_date"] == "": d["Release_date"] = None
+                cur.execute(input)
+                if not cur.fetchall():
+                    input = 'CALL Mv_insert (\'{}\');'.format(json.dumps(d))
+                    if cur.execute(input): ret.append(d)
+                    mysql.connection.commit()
+                
+            with open('insert+fail({}).json'.format(data_path.split("/")[4].split('.')[0]),'w', encoding='utf-8') as make_file:
+                json.dump(ret, make_file, indent="\t")
+            
+            make_file.close()
+
+            f.close()
+                
+            cur.close()
+
+        elif name == "movie_officials":
+            data_path = request.get_data().decode()
+            with open(data_path, encoding='utf-8') as f:
+                data = json.load(f)
+            print(len(data["movie"]))
+            
+            ret = []
+            cur = mysql.connection.cursor()
+
+            for d in data["movie"]:
+                input = "SELECT * FROM MOVIE_OFFICIALS WHERE Officials_id={};".format(d["Officials_id"])
+                d["Name"] = '{}'.format(d["Name"]).replace("'","''")
+                d["Name"] = '{}'.format(d["Name"]).replace("\r"," ")
+                d["Name"] = '{}'.format(d["Name"]).replace("\n"," ")
+                d["Name"] = '{}'.format(d["Name"]).replace("\t"," ")
+                d["Name"] = '{}'.format(d["Name"]).replace("\\","\\\\")
+                d["Name"] = '{}'.format(d["Name"]).replace("\"","\\\"")
+                d["Biography"] = '{}'.format(d["Biography"]).replace("'","''")
+                d["Biography"] = '{}'.format(d["Biography"]).replace("\r"," ")
+                d["Biography"] = '{}'.format(d["Biography"]).replace("\n"," ")
+                d["Biography"] = '{}'.format(d["Biography"]).replace("\t"," ")
+                d["Biography"] = '{}'.format(d["Biography"]).replace("\\","\\\\")
+                d["Biography"] = '{}'.format(d["Biography"]).replace("\"","\\\"")
+                cur.execute(input)
+                if not cur.fetchall():
+                    input = 'CALL Mo_insert (\'{}\');'.format(json.dumps(d))
+                    if cur.execute(input):  ret.append(d)
+                mysql.connection.commit()
+                
+                
+            with open('insert+fail({}).json'.format(data_path.split("/")[4].split('.')[0]),'w', encoding='utf-8') as make_file:
+                json.dump(ret, make_file, indent="\t")
+            
+            make_file.close()
+
+            f.close()
+                
+            cur.close()
+
+        elif name == "act_in":
+            data_path = request.get_data().decode()
+            with open(data_path, encoding='utf-8') as f:
+                data = json.load(f)
+            print(len(data["movie"]))
+            
+            ret = []
+            cur = mysql.connection.cursor()
+
+            for d in data["movie"]:
+                input = "SELECT * FROM ACT_IN WHERE Mid={} and Oid={};".format(d["Mid"], d["Oid"])
+                cur.execute(input)
+                if not cur.fetchall():
+                    input = 'CALL Act_insert (\'{}\');'.format(json.dumps(d))
+                    if cur.execute(input):  ret.append(d)
+                mysql.connection.commit()
+                
+                
+            with open('insert+fail({}).json'.format(data_path.split("/")[4].split('.')[0]),'w', encoding='utf-8') as make_file:
+                json.dump(ret, make_file, indent="\t")
+            
+            make_file.close()
+
+            f.close()
+                
+            cur.close()
+
+        elif name == "directed":
+            data_path = request.get_data().decode()
+            with open(data_path, encoding='utf-8') as f:
+                data = json.load(f)
+            print(len(data["movie"]))
+            
+            ret = []
+            cur = mysql.connection.cursor()
+
+            for d in data["movie"]:
+                input = "SELECT * FROM DIRECTED WHERE Mid={} and Oid={};".format(d["Mid"], d["Oid"])
+                cur.execute(input)
+                if not cur.fetchall():
+                    input = 'CALL Direc_insert (\'{}\');'.format(json.dumps(d))
+                    if cur.execute(input):  ret.append(d)
+                mysql.connection.commit()
+                
+                
+            with open('insert+fail({}).json'.format(data_path.split("/")[4].split('.')[0]),'w', encoding='utf-8') as make_file:
+                json.dump(ret, make_file, indent="\t")
+            
+            make_file.close()
+
+            f.close()
+                
+            cur.close()
+
         if ret :
             return 'success'
         else:
@@ -54,8 +217,4 @@ class DoSimple(Resource):
 
 if __name__ == '__main__':
     app.run(debug=True)
-    cur = mysql.connection.cursor()
-    cur.execute("SHOW FULL COLUMNS FROM MOVIE")
-    columns.append(cur.fetchall())
-    print(columns)
 
