@@ -2,3 +2,6 @@
 __pycache__/
 *.json
 sql_store/
+*.sql
+0
+null

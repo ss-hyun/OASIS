@@ -8,12 +8,18 @@ url = host + path
 
 
 name = "/up_comming"
-page = 7
+page = 2
 
 r = requests.get(url+name, params={'page':page})
 print(json.loads(r.text))
 
 name = "/higher_grade"
+page = 1
+
+r = requests.get(url+name, params={'page':page})
+print(json.loads(r.text))
+
+name = "/popular_movie"
 page = 1
 
 r = requests.get(url+name, params={'page':page})

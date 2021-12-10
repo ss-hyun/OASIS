@@ -1,8 +1,8 @@
 import os
-import re
+#import re
 import json
 from flask import Flask, jsonify, request
-from flask_cors import CORS
+#from flask_cors import CORS
 from flask_restx import Resource, Api
 from flask_mysqldb import MySQL
 from dotenv import load_dotenv
@@ -32,58 +32,34 @@ attribute_list = {
 class DoSimple(Resource):
     def get(self, name):
         if name == "up_comming":
-            pg = (int(request.args['page'])-1)*20
+            pg = int(request.args['page'])
             cur = mysql.connection.cursor()
-            input = "SELECT GROUP_CONCAT(L) AS id_lst\
-                        FROM( SELECT JSON_OBJECT(\
-                                'Movie_id', Movie_id\
-                                ) AS l FROM (\
-                                    SELECT Movie_id FROM MOVIE\
-                                        WHERE Release_date > NOW()\
-                                        ORDER BY Release_date ASC, Movie_id ASC\
-                                        LIMIT 20 OFFSET {}\
-                                ) AS L\
-                        ) AS J".format(pg)
-            cur.execute(input)
+            par = { "req" : name }
+            cur.callproc('Get_mv_thin',(pg, json.dumps(par), ""))
+            cur.execute('SELECT @_Get_mv_thin_2')
             res = cur.fetchall()
             print(res[0][0])
-            return jsonify(res[0][0])
+            return res[0][0]
 
         if name == "popular_movie":
-            pg = (int(request.args['page'])-1)*20
+            pg = int(request.args['page'])
             cur = mysql.connection.cursor()
-            input = "SELECT GROUP_CONCAT(L) AS id_lst\
-                        FROM( SELECT JSON_OBJECT(\
-                                'Movie_id', Movie_id\
-                                ) AS l FROM (\
-                                    SELECT Movie_id FROM MOVIE\
-                                        WHERE Release_date > NOW()\
-                                        ORDER BY Grade DESC, Movie_id ASC\
-                                        LIMIT 20 OFFSET {}\
-                                ) AS L\
-                        ) AS J".format(pg)
-            cur.execute(input)
+            par = { "req" : name }
+            cur.callproc('Get_mv_thin',(pg, json.dumps(par), ""))
+            cur.execute('SELECT @_Get_mv_thin_2')
             res = cur.fetchall()
             print(res[0][0])
-            return jsonify(res[0][0])
+            return res[0][0]
 
         if name == "higher_grade":
-            pg = (int(request.args['page'])-1)*20
+            pg = int(request.args['page'])
             cur = mysql.connection.cursor()
-            input = "SELECT GROUP_CONCAT(L) AS id_lst\
-                        FROM( SELECT JSON_OBJECT(\
-                                'Movie_id', Movie_id\
-                                ) AS l FROM (\
-                                    SELECT Movie_id FROM MOVIE\
-                                        WHERE Release_date > NOW()\
-                                        ORDER BY Grade DESC, Movie_id ASC\
-                                        LIMIT 20 OFFSET {}\
-                                ) AS L\
-                        ) AS J".format(pg)
-            cur.execute(input)
+            par = { "req" : name }
+            cur.callproc('Get_mv_thin',(pg, json.dumps(par), ""))
+            cur.execute('SELECT @_Get_mv_thin_2')
             res = cur.fetchall()
             print(res[0][0])
-            return jsonify(res[0][0])
+            return res[0][0]
 
         if name == "search_movie_name":
             cur = mysql.connection.cursor()
@@ -120,8 +96,6 @@ class DoSimple(Resource):
             cur.execute("SELECT * FROM MOVIE;")
             res = cur.fetchall()
             return jsonify(res)
-
-
 
 
 
