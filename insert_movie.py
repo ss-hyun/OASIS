@@ -12,10 +12,10 @@ name = "/movie"
 #     mv_list = json.load(f)
 
 # param = { 'mv' : str(mv_list).encode('utf-8') }
-p = requests.post(url+name, data="/home/ss/MEI_database/MOVIE1.json")
+p = requests.post(url+name, data="/home/ss/MEI_database/MOVIE.json")
 print(p)
-p = requests.post(url+name, data="/home/ss/MEI_database/MOVIE2.json")
-print(p)
+# p = requests.post(url+name, data="/home/ss/MEI_database/MOVIE2.json")
+# print(p)
 
 # ls = []
 # i = 0

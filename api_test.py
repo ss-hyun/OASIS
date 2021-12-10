@@ -1,30 +1,20 @@
 import requests
+import json
 
 host = 'http://127.0.0.1:5000/'
 
-path = 'admin'
+path = 'movie'
 url = host + path
-name = "/movie"
-
-r = requests.get(url+name)
-print(r.text)
-
-movie = { 'Movie_id': 10, 
-            'Title':'"apitest3"', 
-            'Release_date': 19970926, 
-            'Running_time':136, 
-            'Movie_rating':'"12"' ,
-            "Budget" : 1234,
-            "Image_link" : '"/test/api"',
-            "Overview" : '"hahaha"', 
-            "Total_revenue" : 12344, 
-            "Grade" : 10.1, 
-            "Vote_count" : 10
-}
 
 
-p = requests.post(url+name, data=movie)
-print(p)
+name = "/up_comming"
+page = 7
 
-r = requests.get(url+name)
-print(r.text)
+r = requests.get(url+name, params={'page':page})
+print(json.loads(r.text))
+
+name = "/higher_grade"
+page = 1
+
+r = requests.get(url+name, params={'page':page})
+print(json.loads(r.text))

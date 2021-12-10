@@ -28,6 +28,103 @@ attribute_list = {
     "VARIANCE" : [ "Mid", "Update_date", "Daily_revenue" ]
 }
 
+@api.route('/movie/<string:name>')
+class DoSimple(Resource):
+    def get(self, name):
+        if name == "up_comming":
+            pg = (int(request.args['page'])-1)*20
+            cur = mysql.connection.cursor()
+            input = "SELECT GROUP_CONCAT(L) AS id_lst\
+                        FROM( SELECT JSON_OBJECT(\
+                                'Movie_id', Movie_id\
+                                ) AS l FROM (\
+                                    SELECT Movie_id FROM MOVIE\
+                                        WHERE Release_date > NOW()\
+                                        ORDER BY Release_date ASC, Movie_id ASC\
+                                        LIMIT 20 OFFSET {}\
+                                ) AS L\
+                        ) AS J".format(pg)
+            cur.execute(input)
+            res = cur.fetchall()
+            print(res[0][0])
+            return jsonify(res[0][0])
+
+        if name == "popular_movie":
+            pg = (int(request.args['page'])-1)*20
+            cur = mysql.connection.cursor()
+            input = "SELECT GROUP_CONCAT(L) AS id_lst\
+                        FROM( SELECT JSON_OBJECT(\
+                                'Movie_id', Movie_id\
+                                ) AS l FROM (\
+                                    SELECT Movie_id FROM MOVIE\
+                                        WHERE Release_date > NOW()\
+                                        ORDER BY Grade DESC, Movie_id ASC\
+                                        LIMIT 20 OFFSET {}\
+                                ) AS L\
+                        ) AS J".format(pg)
+            cur.execute(input)
+            res = cur.fetchall()
+            print(res[0][0])
+            return jsonify(res[0][0])
+
+        if name == "higher_grade":
+            pg = (int(request.args['page'])-1)*20
+            cur = mysql.connection.cursor()
+            input = "SELECT GROUP_CONCAT(L) AS id_lst\
+                        FROM( SELECT JSON_OBJECT(\
+                                'Movie_id', Movie_id\
+                                ) AS l FROM (\
+                                    SELECT Movie_id FROM MOVIE\
+                                        WHERE Release_date > NOW()\
+                                        ORDER BY Grade DESC, Movie_id ASC\
+                                        LIMIT 20 OFFSET {}\
+                                ) AS L\
+                        ) AS J".format(pg)
+            cur.execute(input)
+            res = cur.fetchall()
+            print(res[0][0])
+            return jsonify(res[0][0])
+
+        if name == "search_movie_name":
+            cur = mysql.connection.cursor()
+            cur.execute("SELECT * FROM MOVIE;")
+            res = cur.fetchall()
+            return jsonify(res)
+
+        if name == "search_person_name":
+            cur = mysql.connection.cursor()
+            cur.execute("SELECT * FROM MOVIE;")
+            res = cur.fetchall()
+            return jsonify(res)
+
+        if name == "participate_deep":
+            cur = mysql.connection.cursor()
+            cur.execute("SELECT * FROM MOVIE;")
+            res = cur.fetchall()
+            return jsonify(res)
+
+        if name == "participate_thin":
+            cur = mysql.connection.cursor()
+            cur.execute("SELECT * FROM MOVIE;")
+            res = cur.fetchall()
+            return jsonify(res)
+
+        if name == "movie_deep":
+            cur = mysql.connection.cursor()
+            cur.execute("SELECT * FROM MOVIE;")
+            res = cur.fetchall()
+            return jsonify(res)
+
+        if name == "movie_thin":
+            cur = mysql.connection.cursor()
+            cur.execute("SELECT * FROM MOVIE;")
+            res = cur.fetchall()
+            return jsonify(res)
+
+
+
+
+
 @api.route('/admin/<string:name>')
 class DoSimple(Resource):
     def get(self, name):
@@ -41,8 +138,11 @@ class DoSimple(Resource):
         if name == "genres":
             data_path = request.get_data().decode()
 
+            data = []
+
             with open(data_path, encoding='utf-8') as f:
-                data = json.load(f)
+                pass
+                
             print(len(data))
             
             ret = []
@@ -85,9 +185,10 @@ class DoSimple(Resource):
             
             ret = []
             cur = mysql.connection.cursor()
+            id=[]
 
             for d in data:
-                input = "SELECT * FROM MOVIE WHERE Movie_id={};".format(d["Movie_id"])
+                # input = "SELECT * FROM MOVIE WHERE Movie_id={};".format(d["Movie_id"])
                 d["Title"] = '{}'.format(d["Title"]).replace("'","''")
                 d["Title"] = '{}'.format(d["Title"]).replace("\r"," ")
                 d["Title"] = '{}'.format(d["Title"]).replace("\n"," ")
@@ -101,11 +202,12 @@ class DoSimple(Resource):
                 d["Overview"] = '{}'.format(d["Overview"]).replace("\\","\\\\")
                 d["Overview"] = '{}'.format(d["Overview"]).replace("\"","\\\"")
                 if d["Release_date"] == "": d["Release_date"] = None
-                cur.execute(input)
-                if not cur.fetchall():
-                    input = 'CALL Mv_insert (\'{}\');'.format(json.dumps(d))
-                    if cur.execute(input): ret.append(d)
-                    mysql.connection.commit()
+                # cur.execute(input)
+                # s=cur.fetchall()
+                # if not s:
+                input = 'CALL Mv_insert_or_update (\'{}\');'.format(json.dumps(d))
+                if cur.execute(input): ret.append(d)
+                mysql.connection.commit()
                 
             with open('insert+fail({}).json'.format(data_path.split("/")[4].split('.')[0]),'w', encoding='utf-8') as make_file:
                 json.dump(ret, make_file, indent="\t")
@@ -126,7 +228,7 @@ class DoSimple(Resource):
             cur = mysql.connection.cursor()
 
             for d in data["movie"]:
-                input = "SELECT * FROM MOVIE_OFFICIALS WHERE Officials_id={};".format(d["Officials_id"])
+                # input = "SELECT * FROM MOVIE_OFFICIALS WHERE Officials_id={};".format(d["Officials_id"])
                 d["Name"] = '{}'.format(d["Name"]).replace("'","''")
                 d["Name"] = '{}'.format(d["Name"]).replace("\r"," ")
                 d["Name"] = '{}'.format(d["Name"]).replace("\n"," ")
@@ -139,10 +241,10 @@ class DoSimple(Resource):
                 d["Biography"] = '{}'.format(d["Biography"]).replace("\t"," ")
                 d["Biography"] = '{}'.format(d["Biography"]).replace("\\","\\\\")
                 d["Biography"] = '{}'.format(d["Biography"]).replace("\"","\\\"")
-                cur.execute(input)
-                if not cur.fetchall():
-                    input = 'CALL Mo_insert (\'{}\');'.format(json.dumps(d))
-                    if cur.execute(input):  ret.append(d)
+                # cur.execute(input)
+                # if not cur.fetchall():
+                input = 'CALL Mo_insert_or_update (\'{}\');'.format(json.dumps(d))
+                if cur.execute(input):  ret.append(d)
                 mysql.connection.commit()
                 
                 
@@ -150,8 +252,6 @@ class DoSimple(Resource):
                 json.dump(ret, make_file, indent="\t")
             
             make_file.close()
-
-            f.close()
                 
             cur.close()
 
