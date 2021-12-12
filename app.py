@@ -83,16 +83,24 @@ class DoSimple(Resource):
             return jsonify(res[0][0])
 
         if name == "search_movie_name":
+            pg = int(request.args['page'])
+            mvname = int(request.args['mvname'])
             cur = mysql.connection.cursor()
-            cur.execute("SELECT * FROM MOVIE;")
+            par = { "req" : name, "mvname" : mvname }
+            cur.callproc('Get_mv_thin',(pg, json.dumps(par), ""))
+            cur.execute('SELECT @_Get_mv_thin_2')
             res = cur.fetchall()
-            return jsonify(res)
-
+            return jsonify(res[0][0])
+        
         if name == "search_person_name":
+            pg = int(request.args['page'])
+            moname = int(request.args['moname'])
             cur = mysql.connection.cursor()
-            cur.execute("SELECT * FROM MOVIE;")
+            par = { "req" : name, "moname" : moname }
+            cur.callproc('Get_mo_thin',(pg, json.dumps(par), ""))
+            cur.execute('SELECT @_Get_mo_thin_2')
             res = cur.fetchall()
-            return jsonify(res)
+            return jsonify(res[0][0])
 
 
 @api.route('/admin/<string:name>')
