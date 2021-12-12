@@ -1,8 +1,6 @@
 import os
-#import re
 import json
 from flask import Flask, jsonify, request
-#from flask_cors import CORS
 from flask_restx import Resource, Api
 from flask_mysqldb import MySQL
 from dotenv import load_dotenv
@@ -18,16 +16,6 @@ app.config['MYSQL_PASSWORD'] = os.getenv("MYSQL_PASSWORD")
 app.config['MYSQL_HOST'] = os.getenv("MYSQL_HOST")
 app.config['MYSQL_DB'] = os.getenv("MYSQL_DB")
 
-attribute_list = {
-    "MOVIE" : [ "Movie_id", "Title", "Release_date", "Running_time", "Movie_rating",
-                    "Budget", "Image_link", "Overview", "Total_revenue", "Grade", "Vote_count" ],
-    "M_GENRES" : [ "Mid", "Genres" ],
-    "MOVIE_OFFICIALS" : [ "Officials_id", "Name", "Birth", "Gender", "Biography", "Image_link" ],
-    "ACT_IN" :  [ "Mid", "Oid" ],
-    "DIRECTED" : [ "Mid", "Oid" ],
-    "VARIANCE" : [ "Mid", "Update_date", "Daily_revenue" ]
-}
-
 @api.route('/movie/<string:name>')
 class DoSimple(Resource):
     def get(self, name):
@@ -38,8 +26,7 @@ class DoSimple(Resource):
             cur.callproc('Get_mv_thin',(pg, json.dumps(par), ""))
             cur.execute('SELECT @_Get_mv_thin_2')
             res = cur.fetchall()
-            print(res[0][0])
-            return res[0][0]
+            return jsonify(res[0][0])
 
         if name == "popular_movie":
             pg = int(request.args['page'])
@@ -48,8 +35,7 @@ class DoSimple(Resource):
             cur.callproc('Get_mv_thin',(pg, json.dumps(par), ""))
             cur.execute('SELECT @_Get_mv_thin_2')
             res = cur.fetchall()
-            print(res[0][0])
-            return res[0][0]
+            return jsonify(res[0][0])
 
         if name == "higher_grade":
             pg = int(request.args['page'])
@@ -58,8 +44,43 @@ class DoSimple(Resource):
             cur.callproc('Get_mv_thin',(pg, json.dumps(par), ""))
             cur.execute('SELECT @_Get_mv_thin_2')
             res = cur.fetchall()
-            print(res[0][0])
-            return res[0][0]
+            return jsonify(res[0][0])
+
+        if name == "participate_officials":
+            pg = int(request.args['page'])
+            moid = int(request.args['moid'])
+            cur = mysql.connection.cursor()
+            par = { "req" : name, "oid" : moid }
+            cur.callproc('Get_mv_thin',(pg, json.dumps(par), ""))
+            cur.execute('SELECT @_Get_mv_thin_2')
+            res = cur.fetchall()
+            return jsonify(res[0][0])
+
+        if name == "movie_deep":
+            mvid = int(request.args['mvid'])
+            cur = mysql.connection.cursor()
+            cur.callproc('Get_mv_deep',(mvid, '{"req":""}', ""))
+            cur.execute('SELECT @_Get_mv_deep_2')
+            res = cur.fetchall()
+            return jsonify(res[0][0])
+        
+        if name == "participated_movie":
+            pg = int(request.args['page'])
+            mvid = int(request.args['mvid'])
+            cur = mysql.connection.cursor()
+            par = { "req" : name, "mid" : mvid }
+            cur.callproc('Get_mo_thin',(pg, json.dumps(par), ""))
+            cur.execute('SELECT @_Get_mo_thin_2')
+            res = cur.fetchall()
+            return jsonify(res[0][0])
+
+        if name == "participate_deep":
+            moid = int(request.args['moid'])
+            cur = mysql.connection.cursor()
+            cur.callproc('Get_mo_deep',(moid, '{"req":""}', ""))
+            cur.execute('SELECT @_Get_mo_deep_2')
+            res = cur.fetchall()
+            return jsonify(res[0][0])
 
         if name == "search_movie_name":
             cur = mysql.connection.cursor()
@@ -72,31 +93,6 @@ class DoSimple(Resource):
             cur.execute("SELECT * FROM MOVIE;")
             res = cur.fetchall()
             return jsonify(res)
-
-        if name == "participate_deep":
-            cur = mysql.connection.cursor()
-            cur.execute("SELECT * FROM MOVIE;")
-            res = cur.fetchall()
-            return jsonify(res)
-
-        if name == "participate_thin":
-            cur = mysql.connection.cursor()
-            cur.execute("SELECT * FROM MOVIE;")
-            res = cur.fetchall()
-            return jsonify(res)
-
-        if name == "movie_deep":
-            cur = mysql.connection.cursor()
-            cur.execute("SELECT * FROM MOVIE;")
-            res = cur.fetchall()
-            return jsonify(res)
-
-        if name == "movie_thin":
-            cur = mysql.connection.cursor()
-            cur.execute("SELECT * FROM MOVIE;")
-            res = cur.fetchall()
-            return jsonify(res)
-
 
 
 @api.route('/admin/<string:name>')
@@ -138,18 +134,6 @@ class DoSimple(Resource):
             make_file.close()
             cur.close()
         elif name == "movie":
-            #param = request.get_data()
-            # mid = request.form['Movie_id']
-            # title = request.form['Title']
-            # release = request.form['Release_date']
-            # run_time = request.form['Running_time']
-            # rating = request.form['Movie_rating']
-            # budget = request.form['Budget']
-            # img = request.form['Image_link']
-            # overview = request.form['Overview']
-            # tot_rev = request.form['Total_revenue']
-            # grade = request.form['Grade']
-            # v_count = request.form['Vote_count']
             
             data_path = request.get_data().decode()
             

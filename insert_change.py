@@ -17,8 +17,8 @@ def rooping():
     p = requests.post(url + name, data="/home/ss/MEI_database/{}".format(filename))
     print(p)
 
-'''schedule.every().days.at("11:40").do(rooping)
+schedule.every().days.at("02:40").do(rooping)
 
 while True:
     schedule.run_pending()
-    time.sleep(1)'''
+    time.sleep(1)
