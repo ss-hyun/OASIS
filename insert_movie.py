@@ -8,13 +8,13 @@ path = 'admin'
 url = host + path
 name = "/movie"
 
-# with open('/home/ss/MEI_database/MOVIE1.json', encoding='utf-8') as f:
+# with open('/home/ss/OASIS/MOVIE1.json', encoding='utf-8') as f:
 #     mv_list = json.load(f)
 
 # param = { 'mv' : str(mv_list).encode('utf-8') }
-p = requests.post(url+name, data="/home/ss/MEI_database/MOVIE.json")
+p = requests.post(url+name, data="/home/ss/OASIS/MOVIE.json")
 print(p)
-# p = requests.post(url+name, data="/home/ss/MEI_database/MOVIE2.json")
+# p = requests.post(url+name, data="/home/ss/OASIS/MOVIE2.json")
 # print(p)
 
 # ls = []

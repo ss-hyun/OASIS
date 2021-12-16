@@ -8,8 +8,8 @@ path = 'admin'
 url = host + path
 name = "/directed"
 
-p = requests.post(url+name, data="/home/ss/MEI_database/DIRECTED2500.json")
+p = requests.post(url+name, data="/home/ss/OASIS/DIRECTED2500.json")
 print(p)
 
-p = requests.post(url+name, data="/home/ss/MEI_database/DIRECTED5000.json")
+p = requests.post(url+name, data="/home/ss/OASIS/DIRECTED5000.json")
 print(p)

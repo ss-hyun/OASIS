@@ -8,8 +8,8 @@ path = 'admin'
 url = host + path
 name = "/act_in"
 
-p = requests.post(url+name, data="/home/ss/MEI_database/ACT_IN2500.json")
+p = requests.post(url+name, data="/home/ss/OASIS/ACT_IN2500.json")
 print(p)
 
-p = requests.post(url+name, data="/home/ss/MEI_database/ACT_IN5000.json")
+p = requests.post(url+name, data="/home/ss/OASIS/ACT_IN5000.json")
 print(p)

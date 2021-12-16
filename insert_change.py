@@ -14,7 +14,7 @@ name = "/change"
 def rooping():
     filename = datetime.today().strftime('%Y%m%d') + ".json"
 
-    p = requests.post(url + name, data="/home/ss/MEI_database/{}".format(filename))
+    p = requests.post(url + name, data="/home/ss/OASIS/{}".format(filename))
     print(p)
 
 schedule.every().days.at("02:40").do(rooping)

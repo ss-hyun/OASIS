@@ -26,7 +26,7 @@ class DoSimple(Resource):
             cur.callproc('Get_mv_thin',(pg, json.dumps(par), ""))
             cur.execute('SELECT @_Get_mv_thin_2')
             res = cur.fetchall()
-            return jsonify(res[0][0])
+            return jsonify(json.loads(res[0][0]))
 
         if name == "popular_movie":
             pg = int(request.args['page'])
@@ -35,7 +35,7 @@ class DoSimple(Resource):
             cur.callproc('Get_mv_thin',(pg, json.dumps(par), ""))
             cur.execute('SELECT @_Get_mv_thin_2')
             res = cur.fetchall()
-            return jsonify(res[0][0])
+            return jsonify(json.loads(res[0][0]))
 
         if name == "higher_grade":
             pg = int(request.args['page'])
@@ -44,7 +44,7 @@ class DoSimple(Resource):
             cur.callproc('Get_mv_thin',(pg, json.dumps(par), ""))
             cur.execute('SELECT @_Get_mv_thin_2')
             res = cur.fetchall()
-            return jsonify(res[0][0])
+            return jsonify(json.loads(res[0][0]))
 
         if name == "participate_officials":
             pg = int(request.args['page'])
@@ -54,7 +54,7 @@ class DoSimple(Resource):
             cur.callproc('Get_mv_thin',(pg, json.dumps(par), ""))
             cur.execute('SELECT @_Get_mv_thin_2')
             res = cur.fetchall()
-            return jsonify(res[0][0])
+            return jsonify(json.loads(res[0][0]))
 
         if name == "movie_deep":
             mvid = int(request.args['mvid'])
@@ -62,7 +62,7 @@ class DoSimple(Resource):
             cur.callproc('Get_mv_deep',(mvid, '{"req":""}', ""))
             cur.execute('SELECT @_Get_mv_deep_2')
             res = cur.fetchall()
-            return jsonify(res[0][0])
+            return jsonify(json.loads(res[0][0]))
         
         if name == "participated_movie":
             pg = int(request.args['page'])
@@ -72,7 +72,7 @@ class DoSimple(Resource):
             cur.callproc('Get_mo_thin',(pg, json.dumps(par), ""))
             cur.execute('SELECT @_Get_mo_thin_2')
             res = cur.fetchall()
-            return jsonify(res[0][0])
+            return jsonify(json.loads(res[0][0]))
 
         if name == "participate_deep":
             moid = int(request.args['moid'])
@@ -80,7 +80,7 @@ class DoSimple(Resource):
             cur.callproc('Get_mo_deep',(moid, '{"req":""}', ""))
             cur.execute('SELECT @_Get_mo_deep_2')
             res = cur.fetchall()
-            return jsonify(res[0][0])
+            return jsonify(json.loads(res[0][0]))
 
         if name == "search_movie_name":
             pg = int(request.args['page'])
@@ -90,7 +90,7 @@ class DoSimple(Resource):
             cur.callproc('Get_mv_thin',(pg, json.dumps(par), ""))
             cur.execute('SELECT @_Get_mv_thin_2')
             res = cur.fetchall()
-            return jsonify(res[0][0])
+            return jsonify(json.loads(res[0][0]))
         
         if name == "search_person_name":
             pg = int(request.args['page'])
@@ -100,18 +100,11 @@ class DoSimple(Resource):
             cur.callproc('Get_mo_thin',(pg, json.dumps(par), ""))
             cur.execute('SELECT @_Get_mo_thin_2')
             res = cur.fetchall()
-            return jsonify(res[0][0])
+            return jsonify(json.loads(res[0][0]))
 
 
 @api.route('/admin/<string:name>')
 class DoSimple(Resource):
-    def get(self, name):
-        if name == "movie":
-            cur = mysql.connection.cursor()
-            cur.execute("SELECT * FROM MOVIE;")
-            res = cur.fetchall()
-            return jsonify(res)
-
     def post(self, name):
         if name == "genres":
             data_path = request.get_data().decode()
