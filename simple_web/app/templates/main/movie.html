@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>[OASIS] MOVIE</title>
+
+        <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/static/css/starter-template.css" rel="stylesheet">
+
+    </head>
+    <body>
+ 
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/main">OASIS</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="/main">Home</a></li>
+            <li class="active"><a href="/movie?page=1&order=0">Movie</a></li>
+            <li><a href="/search?page=1">Search</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+      <div class="container">
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="/movie?page=1&order=0">Popular</a></li>
+            <li><a href="/movie?page=1&order=1">Grade</a></li>
+            <li><a href="/movie?page=1&order=2">UP Comming</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+
+    <div class="container">
+      <h1>{{order}}</h1>
+      <div class="col-md-6">
+        <p class="lead">
+            -----------------------------<br>
+            <img src="{{movie[0]['Image_link']}}" width="200px">
+            <a href="/movie_deep?mvid={{movie[0]['Movie_id']}}">   {{movie[0]['Title']}}</a><br>
+            -----------------------------<br>
+            <img src="{{movie[2]['Image_link']}}" width="200px">
+            <a href="/movie_deep?mvid={{movie[2]['Movie_id']}}">   {{movie[2]['Title']}}</a><br>
+            -----------------------------<br>
+            <img src="{{movie[4]['Image_link']}}" width="200px">
+            <a href="/movie_deep?mvid={{movie[4]['Movie_id']}}">   {{movie[4]['Title']}}</a><br>
+            -----------------------------<br>
+            <img src="{{movie[6]['Image_link']}}" width="200px">
+            <a href="/movie_deep?mvid={{movie[6]['Movie_id']}}">   {{movie[6]['Title']}}</a><br>
+            -----------------------------<br>
+            <img src="{{movie[8]['Image_link']}}" width="200px">
+            <a href="/movie_deep?mvid={{movie[8]['Movie_id']}}">   {{movie[8]['Title']}}</a><br>
+            -----------------------------<br>
+            <img src="{{movie[10]['Image_link']}}" width="200px">
+            <a href="/movie_deep?mvid={{movie[10]['Movie_id']}}">   {{movie[10]['Title']}}</a><br>
+            -----------------------------<br>
+            <img src="{{movie[12]['Image_link']}}" width="200px">
+            <a href="/movie_deep?mvid={{movie[12]['Movie_id']}}">   {{movie[12]['Title']}}</a><br>
+            -----------------------------<br>
+            <img src="{{movie[14]['Image_link']}}" width="200px">
+            <a href="/movie_deep?mvid={{movie[14]['Movie_id']}}">   {{movie[14]['Title']}}</a><br>
+            -----------------------------<br>
+            <img src="{{movie[16]['Image_link']}}" width="200px">
+            <a href="/movie_deep?mvid={{movie[16]['Movie_id']}}">   {{movie[16]['Title']}}</a><br>
+            -----------------------------<br>
+            <img src="{{movie[18]['Image_link']}}" width="200px">
+            <a href="/movie_deep?mvid={{movie[18]['Movie_id']}}">   {{movie[18]['Title']}}</a><br>
+            -----------------------------<br>
+        </p>
+      </div>
+      <div class="col-md-6">
+        <p class="lead">
+            -----------------------------<br>
+            <img src="{{movie[1]['Image_link']}}" width="200px">
+            <a href="/movie_deep?mvid={{movie[1]['Movie_id']}}">   {{movie[1]['Title']}}</a><br>
+            -----------------------------<br>
+            <img src="{{movie[3]['Image_link']}}" width="200px">
+            <a href="/movie_deep?mvid={{movie[3]['Movie_id']}}">   {{movie[3]['Title']}}</a><br>
+            -----------------------------<br>
+            <img src="{{movie[5]['Image_link']}}" width="200px">
+            <a href="/movie_deep?mvid={{movie[5]['Movie_id']}}">   {{movie[5]['Title']}}</a><br>
+            -----------------------------<br>
+            <img src="{{movie[7]['Image_link']}}" width="200px">
+            <a href="/movie_deep?mvid={{movie[7]['Movie_id']}}">   {{movie[7]['Title']}}</a><br>
+            -----------------------------<br>
+            <img src="{{movie[9]['Image_link']}}" width="200px">
+            <a href="/movie_deep?mvid={{movie[9]['Movie_id']}}">   {{movie[9]['Title']}}</a><br>
+            -----------------------------<br>
+            <img src="{{movie[11]['Image_link']}}" width="200px">
+            <a href="/movie_deep?mvid={{movie[11]['Movie_id']}}">   {{movie[11]['Title']}}</a><br>
+            -----------------------------<br>
+            <img src="{{movie[13]['Image_link']}}" width="200px">
+            <a href="/movie_deep?mvid={{movie[13]['Movie_id']}}">   {{movie[13]['Title']}}</a><br>
+            -----------------------------<br>
+            <img src="{{movie[15]['Image_link']}}" width="200px">
+            <a href="/movie_deep?mvid={{movie[15]['Movie_id']}}">   {{movie[15]['Title']}}</a><br>
+            -----------------------------<br>
+            <img src="{{movie[17]['Image_link']}}" width="200px">
+            <a href="/movie_deep?mvid={{movie[17]['Movie_id']}}">   {{movie[17]['Title']}}</a><br>
+            -----------------------------<br>
+            <img src="{{movie[19]['Image_link']}}" width="200px">
+            <a href="/movie_deep?mvid={{movie[19]['Movie_id']}}">   {{movie[19]['Title']}}</a><br>
+            -----------------------------<br>
+        </p>
+      </div>
+    </div><!-- /.container -->
+ 
+ 
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+
+    </body>
+</html>

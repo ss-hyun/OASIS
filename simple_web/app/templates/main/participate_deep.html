@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>[Python Flask] 웹 페이지 만들기 - kkamikoon</title>
+
+        <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/static/css/starter-template.css" rel="stylesheet">
+
+    </head>
+    <body>
+ 
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/main">OASIS</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li><a href="/main">Home</a></li>
+            <li><a href="/movie?page=1&order=0">Movie</a></li>
+            <li><a href="/search?page=1">Search</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+
+    <div class="container">
+      <h1>{{official['Name']}}</h1>
+      <div class="row">
+        <div class="col-md-4">
+          <img src="{{official['Image_link']}}" height="400px"><br>
+        </div>
+        <div class="col-md-8">
+          <p class="lead">
+              Birth : {{official['Birth']}}<br>
+              Gender : {{official['Gender']}}<br>
+              Biography<br>
+              {{official['Biography']}}<br>
+          </p>
+        </div>
+      </div>
+      
+      <br>
+
+      <div class="container">
+        <div class="row">
+          <div class="col-md-6">
+            <h3>Popular same genre movie</h3>
+            <a href="/movie_deep?mvid={{par_mv[0]['Movie_id']}}">{{par_mv[0]['Title']}}, participate for {{par_mv[0]['participate_for']}}</a><br>
+            <img src="{{par_mv[0]['Image_link']}}" width="200px"><br>
+            -----------------------------<br>
+            <a href="/movie_deep?mvid={{par_mv[1]['Movie_id']}}">{{par_mv[1]['Title']}}, participate for {{par_mv[1]['participate_for']}}</a><br>
+            <img src="{{par_mv[1]['Image_link']}}" width="200px"><br>
+            -----------------------------<br>
+            <a href="/movie_deep?mvid={{par_mv[2]['Movie_id']}}">{{par_mv[2]['Title']}}, participate for {{par_mv[2]['participate_for']}}</a><br>
+            <img src="{{par_mv[2]['Image_link']}}" width="200px"><br>
+            -----------------------------<br>
+            <a href="/movie_deep?mvid={{par_mv[3]['Movie_id']}}">{{par_mv[3]['Title']}}, participate for {{par_mv[3]['participate_for']}}</a><br>
+            <img src="{{par_mv[3]['Image_link']}}" width="200px"><br>
+            -----------------------------<br>
+            <a href="/movie_deep?mvid={{par_mv[4]['Movie_id']}}">{{par_mv[4]['Title']}}, participate for {{par_mv[4]['participate_for']}}</a><br>
+            <img src="{{par_mv[4]['Image_link']}}" width="200px"><br>
+            -----------------------------<br>
+          </div>
+        </div>
+ 
+    </div><!-- /.container -->
+ 
+ 
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+
+    </body>
+</html>

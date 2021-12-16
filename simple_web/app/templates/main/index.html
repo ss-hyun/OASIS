@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <title>[OASIS] HOME</title>
+
+        <link href="/static/css/bootstrap.min.css" rel="stylesheet">
+        <link href="/static/css/starter-template.css" rel="stylesheet">
+
+    </head>
+    <body>
+ 
+    <nav class="navbar navbar-inverse navbar-fixed-top">
+      <div class="container">
+        <div class="navbar-header">
+          <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+            <span class="sr-only">Toggle navigation</span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+            <span class="icon-bar"></span>
+          </button>
+          <a class="navbar-brand" href="/main">OASIS</a>
+        </div>
+        <div id="navbar" class="collapse navbar-collapse">
+          <ul class="nav navbar-nav">
+            <li class="active"><a href="/main">Home</a></li>
+            <li><a href="/movie?page=1&order=0">Movie</a></li>
+            <li><a href="/search?page=1">Search</a></li>
+          </ul>
+        </div><!--/.nav-collapse -->
+      </div>
+    </nav>
+ 
+    <div class="container">
+ 
+      <div class="starter-template">
+        <h1>TOP 10</h1>
+        <p class="lead">
+            -----------------------------<br>
+            <a href="/movie_deep?mvid={{movie[0]['Movie_id']}}">{{movie[0]['Title']}}</a><br>
+            <img src="{{movie[0]['Image_link']}}" width="200px"><br>
+            -----------------------------<br>
+            <a href="/movie_deep?mvid={{movie[1]['Movie_id']}}">{{movie[1]['Title']}}</a><br>
+            <img src="{{movie[1]['Image_link']}}" width="200px"><br>
+            -----------------------------<br>
+            <a href="/movie_deep?mvid={{movie[2]['Movie_id']}}">{{movie[2]['Title']}}</a><br>
+            <img src="{{movie[2]['Image_link']}}" width="200px"><br>
+            -----------------------------<br>
+            <a href="/movie_deep?mvid={{movie[3]['Movie_id']}}">{{movie[3]['Title']}}</a><br>
+            <img src="{{movie[3]['Image_link']}}" width="200px"><br>
+            -----------------------------<br>
+            <a href="/movie_deep?mvid={{movie[4]['Movie_id']}}">{{movie[4]['Title']}}</a><br>
+            <img src="{{movie[4]['Image_link']}}" width="200px"><br>
+            -----------------------------<br>
+            <a href="/movie_deep?mvid={{movie[5]['Movie_id']}}">{{movie[5]['Title']}}</a><br>
+            <img src="{{movie[5]['Image_link']}}" width="200px"><br>
+            -----------------------------<br>
+            <a href="/movie_deep?mvid={{movie[6]['Movie_id']}}">{{movie[6]['Title']}}</a><br>
+            <img src="{{movie[6]['Image_link']}}" width="200px"><br>
+            -----------------------------<br>
+            <a href="/movie_deep?mvid={{movie[7]['Movie_id']}}">{{movie[7]['Title']}}</a><br>
+            <img src="{{movie[7]['Image_link']}}" width="200px"><br>
+            -----------------------------<br>
+            <a href="/movie_deep?mvid={{movie[8]['Movie_id']}}">{{movie[8]['Title']}}</a><br>
+            <img src="{{movie[8]['Image_link']}}" width="200px"><br>
+            -----------------------------<br>
+            <a href="/movie_deep?mvid={{movie[9]['Movie_id']}}">{{movie[9]['Title']}}</a><br>
+            <img src="{{movie[9]['Image_link']}}" width="200px"><br>
+            -----------------------------<br>
+        </p>
+      </div>
+ 
+    </div><!-- /.container -->
+ 
+ 
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    <script src="/static/js/jquery.min.js"></script>
+    <script src="/static/js/bootstrap.min.js"></script>
+
+    </body>
+</html>
